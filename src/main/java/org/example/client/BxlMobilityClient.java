@@ -17,6 +17,10 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.zip.GZIPInputStream;
 
+/*
+Utilisation de l'IA pour générer le code de décompression, la source répond en gzip, ce que le client ne décompresse pas seul
+ */
+
 //Client Http
 //Retourne le JSON brut, le parsing se fait dans la classe SnapshotParser.
 @Component
@@ -38,17 +42,16 @@ public class BxlMobilityClient {
 
     public String fetchLatestSnapshotJson() {
         try {
-            // Octets bruts : la source répond en gzip, ce que le client ne décompresse pas seul.
             byte[] body = restClient.get()
                     .uri(URI.create(url))
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .body(byte[].class);
             if (body == null || body.length == 0) {
-                throw new SnapshotUnavailableException("Réponse vide de la source");
+                throw new SnapshotUnavailableException("Réponse vide de l'api");
             }
             String json = decode(body);
-            logger.debug("Réponse brute de la source : {}", json);
+            logger.debug("Réponse brute de l'api : {}", json);
             return json;
         } catch (RestClientException e) {
             throw new SnapshotUnavailableException("Source Brussels Mobility injoignable : " + e.getMessage(), e);
