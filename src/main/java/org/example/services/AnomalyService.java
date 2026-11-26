@@ -32,7 +32,7 @@ public class AnomalyService {
             sensor.measurement("1m").ifPresent(m -> {
                 if (m.speed() > 0 && m.speed() < speedThreshold && m.occupancy() > occupancyThreshold) {
                     anomalies.add(new Anomaly(sensor.id(), sensor.name(), "CONGESTION",
-                            String.format("vitesse %.1f km/h (< %.0f) et occupation %.1f%% (> %.0f)",
+                            String.format("speed %.1f km/h (< %.0f) and occupation %.1f%% (> %.0f)",
                                     m.speed(), speedThreshold, m.occupancy(), occupancyThreshold),
                             snapshot.requestDate()));
                 }
@@ -42,7 +42,7 @@ public class AnomalyService {
             boolean allZero = sensor.byFrequency().values().stream().allMatch(m -> m.count() == 0);
             if (hasLongWindow && allZero) {
                 anomalies.add(new Anomaly(sensor.id(), sensor.name(), "FLATLINE",
-                        "aucun véhicule détecté sur toutes les fenêtres (jusqu'à 60 min)",
+                        "no vehicle detected in all windows (60 min)",
                         snapshot.requestDate()));
             }
         }
