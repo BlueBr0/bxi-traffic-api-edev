@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -45,7 +44,7 @@ public class SnapshotParser {
         for (Map.Entry<String, JsonNode> sensorEntry : root.get("data").properties()) {
             String id = sensorEntry.getKey();
             JsonNode sensorNode = sensorEntry.getValue();
-            String name = sensorNode.path("name").asString(id); // la source n'a pas toujours de champ "name"
+            String name = sensorNode.path("name").asString(id);
 
             Map<String, Measurement> byFrequency = new LinkedHashMap<>();
             for (Map.Entry<String, JsonNode> freq : sensorNode.path("results").properties()) {
@@ -61,7 +60,7 @@ public class SnapshotParser {
 
     private Measurement readLatest(JsonNode frequencyNode) {
         JsonNode latest = frequencyNode.path("t1");
-        if (!latest.isObject()) { // repli : premier objet trouvé
+        if (!latest.isObject()) {
             for (Map.Entry<String, JsonNode> entry : frequencyNode.properties()) {
                 if (entry.getValue().isObject()) {
                     latest = entry.getValue();

@@ -9,7 +9,6 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -18,7 +17,7 @@ import java.time.Duration;
 import java.util.zip.GZIPInputStream;
 
 /*
-Utilisation de l'IA pour générer le code de décompression, la source répond en gzip, ce que le client ne décompresse pas seul
+Utilisation de l'IA pour générer le code de décompression (decode()), la source répond en gzip, ce que le client ne décompresse pas seul
  */
 
 //Client Http
