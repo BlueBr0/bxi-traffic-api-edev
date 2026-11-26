@@ -1,7 +1,9 @@
 package org.example.controller;
 
+import org.example.model.Anomaly;
 import org.example.model.SensorResponse;
 import org.example.model.TotalResponse;
+import org.example.services.AnomalyService;
 import org.example.services.TrafficService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,24 +16,32 @@ import java.util.List;
 @RequestMapping("/api/traffic")
 public class TrafficController {
 
-    private final TrafficService trafficservice;
+    private final TrafficService trafficService;
+    private final AnomalyService anomalyService;
 
-    public TrafficController(TrafficService trafficservice){
-        this.trafficservice = trafficservice;
+    public TrafficController(TrafficService trafficService, AnomalyService anomalyService) {
+        this.trafficService = trafficService;
+        this.anomalyService = anomalyService;
     }
 
     @GetMapping("/total")
     public TotalResponse total(){
-        return trafficservice.getTotal();
+        return trafficService.getTotal();
     }
 
     @GetMapping("/sensors")
     public List<String> sensors(){
-        return trafficservice.getSensorNames();
+        return trafficService.getSensorNames();
     }
 
     @GetMapping("/sensor/{id}")
     public SensorResponse sensor(@PathVariable("id") String id){
-        return trafficservice.getSensor(id);
+        return trafficService.getSensor(id);
     }
+
+    @GetMapping("/anomalies")
+    public List<Anomaly> anomalies() {
+        return anomalyService.detect();
+    }
+
 }
